@@ -4,11 +4,11 @@ from sys import exit
 from pygame.locals import *
 import random
 
-# ÉèÖÃÓÎÏ·ÆÁÄ»´óĞ¡
+# è®¾ç½®æ¸¸æˆå±å¹•å¤§å°
 SCREEN_WIDTH = 480
 SCREEN_HEIGHT = 800
 
-# ×Óµ¯Àà
+# å­å¼¹ç±»
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, bullet_img, init_pos):
         pygame.sprite.Sprite.__init__(self)
@@ -20,54 +20,54 @@ class Bullet(pygame.sprite.Sprite):
     def move(self):
         self.rect.top -= self.speed
 
-# Íæ¼Ò·É»úÀà
+# ç©å®¶é£æœºç±»
 class Player(pygame.sprite.Sprite):
     def __init__(self, plane_img, player_rect, init_pos):
         pygame.sprite.Sprite.__init__(self)
-        self.image = []                                 # ÓÃÀ´´æ´¢Íæ¼Ò·É»úÍ¼Æ¬µÄÁĞ±í
+        self.image = []                                 # ç”¨æ¥å­˜å‚¨ç©å®¶é£æœºå›¾ç‰‡çš„åˆ—è¡¨
         for i in range(len(player_rect)):
             self.image.append(plane_img.subsurface(player_rect[i]).convert_alpha())
-        self.rect = player_rect[0]                      # ³õÊ¼»¯Í¼Æ¬ËùÔÚµÄ¾ØĞÎ
-        self.rect.topleft = init_pos                    # ³õÊ¼»¯¾ØĞÎµÄ×óÉÏ½Ç×ø±ê
-        self.speed = 8                                  # ³õÊ¼»¯Íæ¼Ò·É»úËÙ¶È£¬ÕâÀïÊÇÒ»¸öÈ·¶¨µÄÖµ
-        self.bullets = pygame.sprite.Group()            # Íæ¼Ò·É»úËù·¢ÉäµÄ×Óµ¯µÄ¼¯ºÏ
-        self.img_index = 0                              # Íæ¼Ò·É»úÍ¼Æ¬Ë÷Òı
-        self.is_hit = False                             # Íæ¼ÒÊÇ·ñ±»»÷ÖĞ
+        self.rect = player_rect[0]                      # åˆå§‹åŒ–å›¾ç‰‡æ‰€åœ¨çš„çŸ©å½¢
+        self.rect.topleft = init_pos                    # åˆå§‹åŒ–çŸ©å½¢çš„å·¦ä¸Šè§’åæ ‡
+        self.speed = 8                                  # åˆå§‹åŒ–ç©å®¶é£æœºé€Ÿåº¦ï¼Œè¿™é‡Œæ˜¯ä¸€ä¸ªç¡®å®šçš„å€¼
+        self.bullets = pygame.sprite.Group()            # ç©å®¶é£æœºæ‰€å‘å°„çš„å­å¼¹çš„é›†åˆ
+        self.img_index = 0                              # ç©å®¶é£æœºå›¾ç‰‡ç´¢å¼•
+        self.is_hit = False                             # ç©å®¶æ˜¯å¦è¢«å‡»ä¸­
 
-    # ·¢Éä×Óµ¯
+    # å‘å°„å­å¼¹
     def shoot(self, bullet_img):
         bullet = Bullet(bullet_img, self.rect.midtop)
         self.bullets.add(bullet)
 
-    # ÏòÉÏÒÆ¶¯£¬ĞèÒªÅĞ¶Ï±ß½ç
+    # å‘ä¸Šç§»åŠ¨ï¼Œéœ€è¦åˆ¤æ–­è¾¹ç•Œ
     def moveUp(self):
         if self.rect.top <= 0:
             self.rect.top = 0
         else:
             self.rect.top -= self.speed
 
-    # ÏòÏÂÒÆ¶¯£¬ĞèÒªÅĞ¶Ï±ß½ç
+    # å‘ä¸‹ç§»åŠ¨ï¼Œéœ€è¦åˆ¤æ–­è¾¹ç•Œ
     def moveDown(self):
         if self.rect.top >= SCREEN_HEIGHT - self.rect.height:
             self.rect.top = SCREEN_HEIGHT - self.rect.height
         else:
             self.rect.top += self.speed
 
-    # Ïò×óÒÆ¶¯£¬ĞèÒªÅĞ¶Ï±ß½ç
+    # å‘å·¦ç§»åŠ¨ï¼Œéœ€è¦åˆ¤æ–­è¾¹ç•Œ
     def moveLeft(self):
         if self.rect.left <= 0:
             self.rect.left = 0
         else:
             self.rect.left -= self.speed
 
-    # ÏòÓÒÒÆ¶¯£¬ĞèÒªÅĞ¶Ï±ß½ç        
+    # å‘å³ç§»åŠ¨ï¼Œéœ€è¦åˆ¤æ–­è¾¹ç•Œ        
     def moveRight(self):
         if self.rect.left >= SCREEN_WIDTH - self.rect.width:
             self.rect.left = SCREEN_WIDTH - self.rect.width
         else:
             self.rect.left += self.speed
 
-# µĞ»úÀà
+# æ•Œæœºç±»
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, enemy_img, enemy_down_imgs, init_pos):
        pygame.sprite.Sprite.__init__(self)
@@ -78,45 +78,45 @@ class Enemy(pygame.sprite.Sprite):
        self.speed = 2
        self.down_index = 0
 
-    # µĞ»úÒÆ¶¯£¬±ß½çÅĞ¶Ï¼°É¾³ıÔÚÓÎÏ·Ö÷Ñ­»·Àï´¦Àí
+    # æ•Œæœºç§»åŠ¨ï¼Œè¾¹ç•Œåˆ¤æ–­åŠåˆ é™¤åœ¨æ¸¸æˆä¸»å¾ªç¯é‡Œå¤„ç†
     def move(self):
         self.rect.top += self.speed
 
-# ³õÊ¼»¯PyGame
+# åˆå§‹åŒ– pygame
 pygame.init()
 
-# ÉèÖÃÓÎÏ·½çÃæ´óĞ¡¡¢±³¾°Í¼Æ¬¼°±êÌâ
-# ÓÎÏ·½çÃæÏñËØ´óĞ¡
+# è®¾ç½®æ¸¸æˆç•Œé¢å¤§å°ã€èƒŒæ™¯å›¾ç‰‡åŠæ ‡é¢˜
+# æ¸¸æˆç•Œé¢åƒç´ å¤§å°
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# ÓÎÏ·½çÃæ±êÌâ
-pygame.display.set_caption('·É»ú´óÕ½')
+# æ¸¸æˆç•Œé¢æ ‡é¢˜
+pygame.display.set_caption('é£æœºå¤§æˆ˜')
 
-# ±³¾°Í¼
+# èƒŒæ™¯å›¾
 background = pygame.image.load('resources/image/background.png').convert()
 
-# Game OverµÄ±³¾°Í¼
+# Game Over çš„èƒŒæ™¯å›¾
 game_over = pygame.image.load('resources/image/gameover.png')
 
-# ·É»ú¼°×Óµ¯Í¼Æ¬¼¯ºÏ
+# é£æœºåŠå­å¼¹å›¾ç‰‡é›†åˆ
 plane_img = pygame.image.load('resources/image/shoot.png')
 
-# ÉèÖÃÍæ¼Ò·É»ú²»Í¬×´Ì¬µÄÍ¼Æ¬ÁĞ±í£¬¶àÕÅÍ¼Æ¬Õ¹Ê¾Îª¶¯»­Ğ§¹û
+# è®¾ç½®ç©å®¶é£æœºä¸åŒçŠ¶æ€çš„å›¾ç‰‡åˆ—è¡¨ï¼Œå¤šå¼ å›¾ç‰‡å±•ç¤ºä¸ºåŠ¨ç”»æ•ˆæœ
 player_rect = []
-player_rect.append(pygame.Rect(0, 99, 102, 126))        # Íæ¼Ò·É»úÍ¼Æ¬
+player_rect.append(pygame.Rect(0, 99, 102, 126))        # ç©å®¶é£æœºå›¾ç‰‡
 player_rect.append(pygame.Rect(165, 360, 102, 126))
-player_rect.append(pygame.Rect(165, 234, 102, 126))     # Íæ¼Ò±¬Õ¨Í¼Æ¬
+player_rect.append(pygame.Rect(165, 234, 102, 126))     # ç©å®¶çˆ†ç‚¸å›¾ç‰‡
 player_rect.append(pygame.Rect(330, 624, 102, 126))
 player_rect.append(pygame.Rect(330, 498, 102, 126))
 player_rect.append(pygame.Rect(432, 624, 102, 126))
 player_pos = [200, 600]
 player = Player(plane_img, player_rect, player_pos)
 
-# ×Óµ¯Í¼Æ¬
+# å­å¼¹å›¾ç‰‡
 bullet_rect = pygame.Rect(1004, 987, 9, 21)
 bullet_img = plane_img.subsurface(bullet_rect)
 
-# µĞ»ú²»Í¬×´Ì¬µÄÍ¼Æ¬ÁĞ±í£¬¶àÕÅÍ¼Æ¬Õ¹Ê¾Îª¶¯»­Ğ§¹û
+# æ•Œæœºä¸åŒçŠ¶æ€çš„å›¾ç‰‡åˆ—è¡¨ï¼Œå¤šå¼ å›¾ç‰‡å±•ç¤ºä¸ºåŠ¨ç”»æ•ˆæœ
 enemy1_rect = pygame.Rect(534, 612, 57, 43)
 enemy1_img = plane_img.subsurface(enemy1_rect)
 enemy1_down_imgs = []
@@ -127,32 +127,32 @@ enemy1_down_imgs.append(plane_img.subsurface(pygame.Rect(930, 697, 57, 43)))
 
 enemies1 = pygame.sprite.Group()
 
-# ´æ´¢±»»÷»ÙµÄ·É»ú£¬ÓÃÀ´äÖÈ¾»÷»Ù¶¯»­
+# å­˜å‚¨è¢«å‡»æ¯çš„é£æœºï¼Œç”¨æ¥æ¸²æŸ“å‡»æ¯åŠ¨ç”»
 enemies_down = pygame.sprite.Group()
 
-# ³õÊ¼»¯Éä»÷¼°µĞ»úÒÆ¶¯ÆµÂÊ
+# åˆå§‹åŒ–å°„å‡»åŠæ•Œæœºç§»åŠ¨é¢‘ç‡
 shoot_frequency = 0
 enemy_frequency = 0
 
-# Íæ¼Ò·É»ú±»»÷ÖĞºóµÄĞ§¹û´¦Àí
+# ç©å®¶é£æœºè¢«å‡»ä¸­åçš„æ•ˆæœå¤„ç†
 player_down_index = 16
 
-# ³õÊ¼»¯·ÖÊı
+# åˆå§‹åŒ–åˆ†æ•°
 score = 0
 
-# ÓÎÏ·Ñ­»·Ö¡ÂÊÉèÖÃ
+# æ¸¸æˆå¾ªç¯å¸§ç‡è®¾ç½®
 clock = pygame.time.Clock()
 
-# ÅĞ¶ÏÓÎÏ·Ñ­»·ÍË³öµÄ²ÎÊı
+# åˆ¤æ–­æ¸¸æˆå¾ªç¯é€€å‡ºçš„å‚æ•°
 running = True
 
-# ÓÎÏ·Ö÷Ñ­»·
+# æ¸¸æˆä¸»å¾ªç¯
 while running:
-    # ¿ØÖÆÓÎÏ·×î´óÖ¡ÂÊÎª60
+    # æ§åˆ¶æ¸¸æˆæœ€å¤§å¸§ç‡ä¸º 60
     clock.tick(60)
 
-    # Éú³É×Óµ¯£¬ĞèÒª¿ØÖÆ·¢ÉäÆµÂÊ
-    # Ê×ÏÈÅĞ¶ÏÍæ¼Ò·É»úÃ»ÓĞ±»»÷ÖĞ
+    # ç”Ÿæˆå­å¼¹ï¼Œéœ€è¦æ§åˆ¶å‘å°„é¢‘ç‡
+    # é¦–å…ˆåˆ¤æ–­ç©å®¶é£æœºæ²¡æœ‰è¢«å‡»ä¸­
     if not player.is_hit:
         if shoot_frequency % 15 == 0:
             player.shoot(bullet_img)
@@ -160,7 +160,7 @@ while running:
         if shoot_frequency >= 15:
             shoot_frequency = 0
 
-    # Éú³ÉµĞ»ú£¬ĞèÒª¿ØÖÆÉú³ÉÆµÂÊ
+    # ç”Ÿæˆæ•Œæœºï¼Œéœ€è¦æ§åˆ¶ç”Ÿæˆé¢‘ç‡
     if enemy_frequency % 50 == 0:
         enemy1_pos = [random.randint(0, SCREEN_WIDTH - enemy1_rect.width), 0]
         enemy1 = Enemy(enemy1_img, enemy1_down_imgs, enemy1_pos)
@@ -170,50 +170,50 @@ while running:
         enemy_frequency = 0
 
     for bullet in player.bullets:
-        # ÒÔ¹Ì¶¨ËÙ¶ÈÒÆ¶¯×Óµ¯
+        # ä»¥å›ºå®šé€Ÿåº¦ç§»åŠ¨å­å¼¹
         bullet.move()
-        # ÒÆ¶¯³öÆÁÄ»ºóÉ¾³ı×Óµ¯
+        # ç§»åŠ¨å‡ºå±å¹•ååˆ é™¤å­å¼¹
         if bullet.rect.bottom < 0:
             player.bullets.remove(bullet)   
 
     for enemy in enemies1:
-        #2. ÒÆ¶¯µĞ»ú
+        #2. ç§»åŠ¨æ•Œæœº
         enemy.move()
-        #3. µĞ»úÓëÍæ¼Ò·É»úÅö×²Ğ§¹û´¦Àí
+        #3. æ•Œæœºä¸ç©å®¶é£æœºç¢°æ’æ•ˆæœå¤„ç†
         if pygame.sprite.collide_circle(enemy, player):
             enemies_down.add(enemy)
             enemies1.remove(enemy)
             player.is_hit = True
             break
-        #4. ÒÆ¶¯³öÆÁÄ»ºóÉ¾³ı·É»ú    
+        #4. ç§»åŠ¨å‡ºå±å¹•ååˆ é™¤é£æœº    
         if enemy.rect.top < 0:
             enemies1.remove(enemy)
 
-    #µĞ»ú±»×Óµ¯»÷ÖĞĞ§¹û´¦Àí
-    # ½«±»»÷ÖĞµÄµĞ»ú¶ÔÏóÌí¼Óµ½»÷»ÙµĞ»úGroupÖĞ£¬ÓÃÀ´äÖÈ¾»÷»Ù¶¯»­
+    #æ•Œæœºè¢«å­å¼¹å‡»ä¸­æ•ˆæœå¤„ç†
+    # å°†è¢«å‡»ä¸­çš„æ•Œæœºå¯¹è±¡æ·»åŠ åˆ°å‡»æ¯æ•Œæœº Group ä¸­ï¼Œç”¨æ¥æ¸²æŸ“å‡»æ¯åŠ¨ç”»
     enemies1_down = pygame.sprite.groupcollide(enemies1, player.bullets, 1, 1)
     for enemy_down in enemies1_down:
         enemies_down.add(enemy_down)
 
-    # »æÖÆ±³¾°
+    # ç»˜åˆ¶èƒŒæ™¯
     screen.fill(0)
     screen.blit(background, (0, 0))
 
-    # »æÖÆÍæ¼Ò·É»ú
+    # ç»˜åˆ¶ç©å®¶é£æœº
     if not player.is_hit:
         screen.blit(player.image[player.img_index], player.rect)
-        # ¸ü»»Í¼Æ¬Ë÷ÒıÊ¹·É»úÓĞ¶¯»­Ğ§¹û
+        # æ›´æ¢å›¾ç‰‡ç´¢å¼•ä½¿é£æœºæœ‰åŠ¨ç”»æ•ˆæœ
         player.img_index = shoot_frequency / 8
     else:
-        # Íæ¼Ò·É»ú±»»÷ÖĞºóµÄĞ§¹û´¦Àí
+        # ç©å®¶é£æœºè¢«å‡»ä¸­åçš„æ•ˆæœå¤„ç†
         player.img_index = player_down_index / 8
         screen.blit(player.image[player.img_index], player.rect)
         player_down_index += 1
         if player_down_index > 47:
-            # »÷ÖĞĞ§¹û´¦ÀíÍê³ÉºóÓÎÏ·½áÊø
+            # å‡»ä¸­æ•ˆæœå¤„ç†å®Œæˆåæ¸¸æˆç»“æŸ
             running = False
 
-    # µĞ»ú±»×Óµ¯»÷ÖĞĞ§¹ûÏÔÊ¾
+    # æ•Œæœºè¢«å­å¼¹å‡»ä¸­æ•ˆæœæ˜¾ç¤º
     for enemy_down in enemies_down:
         if enemy_down.down_index == 0:
             pass
@@ -224,31 +224,31 @@ while running:
         screen.blit(enemy_down.down_imgs[enemy_down.down_index / 2], enemy_down.rect)
         enemy_down.down_index += 1
 
-    # ÏÔÊ¾×Óµ¯
+    # æ˜¾ç¤ºå­å¼¹
     player.bullets.draw(screen)
-    # ÏÔÊ¾µĞ»ú
+    # æ˜¾ç¤ºæ•Œæœº
     enemies1.draw(screen)
 
-    # »æÖÆµÃ·Ö
+    # ç»˜åˆ¶å¾—åˆ†
     score_font = pygame.font.Font(None, 36)
     score_text = score_font.render(str(score), True, (128, 128, 128))
     text_rect = score_text.get_rect()
     text_rect.topleft = [10, 10]
     screen.blit(score_text, text_rect)
 
-    # ¸üĞÂÆÁÄ»
+    # æ›´æ–°å±å¹•
     pygame.display.update()
 
-    # ´¦ÀíÓÎÏ·ÍË³ö
+    # å¤„ç†æ¸¸æˆé€€å‡º
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-            
-    # »ñÈ¡¼üÅÌÊÂ¼ş£¨ÉÏÏÂ×óÓÒ°´¼ü£©
+
+    # è·å–é”®ç›˜äº‹ä»¶ï¼ˆä¸Šä¸‹å·¦å³æŒ‰é”®ï¼‰
     key_pressed = pygame.key.get_pressed()
 
-    # ´¦Àí¼üÅÌÊÂ¼ş£¨ÒÆ¶¯·É»úµÄÎ»ÖÃ£©
+    # å¤„ç†é”®ç›˜äº‹ä»¶ï¼ˆç§»åŠ¨é£æœºçš„ä½ç½®ï¼‰
     if key_pressed[K_w] or key_pressed[K_UP]:
         player.moveUp()
     if key_pressed[K_s] or key_pressed[K_DOWN]:
@@ -258,7 +258,7 @@ while running:
     if key_pressed[K_d] or key_pressed[K_RIGHT]:
         player.moveRight()
 
-# ÓÎÏ·Game OverºóÏÔÊ¾×îÖÕµÃ·Ö
+# æ¸¸æˆ Game Over åæ˜¾ç¤ºæœ€ç»ˆå¾—åˆ†
 font = pygame.font.Font(None, 48)
 text = font.render('Score: '+ str(score), True, (255, 0, 0))
 text_rect = text.get_rect()
@@ -267,12 +267,10 @@ text_rect.centery = screen.get_rect().centery + 24
 screen.blit(game_over, (0, 0))
 screen.blit(text, text_rect)
 
-# ÏÔÊ¾µÃ·Ö²¢´¦ÀíÓÎÏ·ÍË³ö
+# æ˜¾ç¤ºå¾—åˆ†å¹¶å¤„ç†æ¸¸æˆé€€å‡º
 while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
     pygame.display.update()
-
-
