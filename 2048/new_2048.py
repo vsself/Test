@@ -1,6 +1,7 @@
 import curses
 from wxPython._wx import false
 from test.test_decimal import directory
+from robotide.editor.dialoghelps import row
 
 letter_codes = [ord(ch) for ch in 'WASDRQwasdrq']
 actions = ['Up', 'Left', 'Down', 'Right', 'Restart', 'Exit']
@@ -28,9 +29,16 @@ class GameField(object):
             return True
         else: return False
     def can_move(self, directory):
-        def can_move_left():
-            
-        
+        def can_move_left(row):
+            flag = False
+            for i in range(len(row)-1):
+                if row[i] == 0 and row[i+1] != 0:
+                    flag = True
+                    break
+                if row[i] != 0 and row[i] == row[i+1]:
+                    flag = True
+                    break        
+            return flag
         
 
 def main(stdscr):
