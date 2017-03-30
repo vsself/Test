@@ -13,7 +13,7 @@ class Brush:
         self.last_pos = None
         self.style = True
         self.brush = pygame.image.load("images/brush.png").convert_alpha()
-        self.brush_now = self.brush.subsurface((0, 0), (1, 1))
+        self.brush_now = self.brush.subsurface((0, 0), (1, 1)) # the initial rect  the original size of the brush
 
     def start_draw(self, pos):
         self.drawing = True
@@ -39,7 +39,7 @@ class Brush:
             size = 32
         print("* set brush size to", size)
         self.size = size
-        self.brush_now = self.brush.subsurface((0, 0), (size*2, size*2))
+        self.brush_now = self.brush.subsurface((0, 0), (size*2, size*2)) 
 
     def get_size(self):
         return self.size
@@ -121,14 +121,14 @@ class Menu:
         for (i, img) in enumerate(self.sizes):
             self.screen.blit(img, self.sizes_rect[i].topleft)
         self.screen.fill((255, 255, 255), (10, 180, 64, 64))
-        pygame.draw.rect(self.screen, (0, 0, 0), (10, 180, 64, 64), 1)
+        pygame.draw.rect(self.screen, (0, 0, 0), (10, 180, 64, 64), 1) #The width argument is the thickness to draw the outer edge. If width is zero then the rectangle will be filled.
         size = self.brush.get_size()
         x = 10 + 32
         y = 180 + 32
         if self.brush.get_brush_style():
             x = x - size
             y = y - size
-            self.screen.blit(self.brush.get_current_brush(), (x, y))
+            self.screen.blit(self.brush.get_current_brush(), (x, y))  #self.brush_now = self.brush.subsurface((0, 0), (size*2, size*2)) 
         else:
             pygame.draw.circle(self.screen,
                                self.brush.get_color(), (x, y), size)
@@ -165,7 +165,7 @@ class Painter:
         self.menu.set_brush(self.brush)
 
     def run(self):
-        self.screen.fill((255, 255, 255))
+        self.screen.fill((255, 255, 255))     #填充颜色为白色 （20,20,20）为黑色
         while True:
             self.clock.tick(30)
             for event in pygame.event.get():
@@ -175,7 +175,8 @@ class Painter:
                     if event.key == K_ESCAPE:
                         self.screen.fill((255, 255, 255))
                 elif event.type == MOUSEBUTTONDOWN:
-                    if event.pos[0] <= 74 and self.menu.click_button(event.pos):
+                    if event.pos[0] <= 74 and self.menu.click_button(event.pos): #当地址小于74时，处理click_button，event.pos 坐标是（34,124）
+                        print event.pos
                         pass
                     else:
                         self.brush.start_draw(event.pos)
